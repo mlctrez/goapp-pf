@@ -18,10 +18,26 @@ type Navigation struct {
 
 type NavClick func(ctx app.Context)
 
-func (c *Navigation) action(name string) func(ctx app.Context, e app.Event) {
+func (c *Navigation) action(name string, tags ...app.Tagger) func(ctx app.Context, e app.Event) {
 	return func(ctx app.Context, e app.Event) {
-		ctx.NewAction("navigation", app.T("name", name))
+		tagger := mergeTags(app.T("name", name), tags)
+		ctx.NewAction("navigation", tagger)
 	}
+}
+
+func mergeTags(tags app.Tagger, additional []app.Tagger) app.Tagger {
+	var allTags []app.Tagger
+
+	allTags = append(allTags, tags)
+	allTags = append(allTags, additional...)
+
+	result := app.Tags{}
+	for _, tagger := range allTags {
+		for k, v := range tagger.Tags() {
+			result.Set(k, v)
+		}
+	}
+	return result
 }
 
 func (c *Navigation) Render() app.UI {
@@ -46,8 +62,14 @@ func (c *Navigation) Render() app.UI {
 			),
 
 			app.Div().Class("pf-c-pagination__nav-page-select").Body(
-				app.Input().Class("pf-c-form-control").Style("width", "4em").Aria("label", "Current example").Size(5).
-					Type("number").Min("1").Max(c.Max).Value(c.Current),
+				app.Input().Class("pf-c-form-control").Style("width", "4em").
+					Aria("label", "Current example").Size(5).
+					Type("number").Min("1").Max(c.Max).Value(c.Current).OnChange(
+					func(ctx app.Context, e app.Event) {
+						var value string
+						c.ValueTo(&value)(ctx, e)
+						c.action("ChangeIndex", app.T("index", value))(ctx, e)
+					}),
 				app.Span().Aria("hidden", true).Body(app.Text(" of "+c.Max)),
 			),
 

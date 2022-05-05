@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"runtime"
 	"sort"
+	"strconv"
 	"strings"
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
@@ -80,6 +81,21 @@ func (b *Body) OnMount(ctx app.Context) {
 			if next[current.Name] != "" {
 				b.index = firstIndex[next[current.Name]]
 			}
+		case "ChangeIndex":
+			app.Log("changeIndex")
+			newIndex := action.Tags.Get("index")
+			i, err := strconv.Atoi(newIndex)
+			if err != nil {
+				return
+			}
+			i--
+			if i < 0 {
+				i = 0
+			}
+			if i > (len(b.namedComponents) - 1) {
+				i = len(b.namedComponents) - 1
+			}
+			b.index = i
 		}
 		b.saveIndex(ctx)
 	})
