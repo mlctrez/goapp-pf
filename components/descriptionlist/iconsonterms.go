@@ -1,0 +1,175 @@
+package descriptionlist
+
+import app "github.com/maxence-charriere/go-app/v9/pkg/app"
+
+type IconsOnTerms struct {
+	app.Compo
+}
+
+func (c *IconsOnTerms) Render() app.UI {
+	return app.Dl().
+		Class("pf-c-description-list").
+		Body(
+			app.Div().
+				Class("pf-c-description-list__group").
+				Body(
+					app.Dt().
+						Class("pf-c-description-list__term").
+						Body(
+							app.Span().
+								Class("pf-c-description-list__term-icon").
+								Body(
+									app.I().
+										Class("fas fa-cube").
+										Aria("hidden", true),
+								),
+							app.Span().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("This is a long description that should wrap to multiple lines in cases where the viewport is quite narrow."),
+								),
+						),
+					app.Dd().
+						Class("pf-c-description-list__description").
+						Body(
+							app.Div().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("example"),
+								),
+						),
+				),
+			app.Div().
+				Class("pf-c-description-list__group").
+				Body(
+					app.Dt().
+						Class("pf-c-description-list__term").
+						Body(
+							app.Span().
+								Class("pf-c-description-list__term-icon").
+								Body(
+									app.I().
+										Class("fas fa-book").
+										Aria("hidden", true),
+								),
+							app.Span().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("Namespace"),
+								),
+						),
+					app.Dd().
+						Class("pf-c-description-list__description").
+						Body(
+							app.Div().
+								Class("pf-c-description-list__text").
+								Body(
+									app.A().
+										Href("#").
+										Body(
+											app.Text("mary-test"),
+										),
+								),
+						),
+				),
+			app.Div().
+				Class("pf-c-description-list__group").
+				Body(
+					app.Dt().
+						Class("pf-c-description-list__term").
+						Body(
+							app.Span().
+								Class("pf-c-description-list__term-icon").
+								Body(
+									app.I().
+										Class("fas fa-key").
+										Aria("hidden", true),
+								),
+							app.Span().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("Labels"),
+								),
+						),
+					app.Dd().
+						Class("pf-c-description-list__description").
+						Body(
+							app.Div().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("example"),
+								),
+						),
+				),
+			app.Div().
+				Class("pf-c-description-list__group").
+				Body(
+					app.Dt().
+						Class("pf-c-description-list__term").
+						Body(
+							app.Span().
+								Class("pf-c-description-list__term-icon").
+								Body(
+									app.I().
+										Class("fas fa-globe").
+										Aria("hidden", true),
+								),
+							app.Span().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("Pod selector"),
+								),
+						),
+					app.Dd().
+						Class("pf-c-description-list__description").
+						Body(
+							app.Div().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Button().
+										Class("pf-c-button pf-m-link pf-m-inline").
+										Type("button").
+										Body(
+											app.Span().
+												Class("pf-c-button__icon pf-m-start").
+												Body(
+													app.I().
+														Class("fas fa-plus-circle").
+														Aria("hidden", true),
+												),
+											app.Text("app=MyApp"),
+										),
+								),
+						),
+				),
+			app.Div().
+				Class("pf-c-description-list__group").
+				Body(
+					app.Dt().
+						Class("pf-c-description-list__term").
+						Body(
+							app.Span().
+								Class("pf-c-description-list__term-icon").
+								Body(
+									app.I().
+										Class("fas fa-flag").
+										Aria("hidden", true),
+								),
+							app.Span().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("Annotation"),
+								),
+						),
+					app.Dd().
+						Class("pf-c-description-list__description").
+						Body(
+							app.Div().
+								Class("pf-c-description-list__text").
+								Body(
+									app.Text("2 Annotations"),
+								),
+						),
+				),
+		)
+}
