@@ -269,9 +269,15 @@ func (s *Scrape) Run() (err error) {
 	buf.WriteString(")\n")
 
 	var componentNames []string
-
-	for componentName, exampleNames := range goAppComponentMap {
+	for componentName := range goAppComponentMap {
 		componentNames = append(componentNames, componentName)
+	}
+	sort.Strings(componentNames)
+
+	for _, componentName := range componentNames {
+
+		exampleNames := goAppComponentMap[componentName]
+
 		packageName := cleanPackageName(componentName)
 		buf.WriteString(
 			fmt.Sprintf("func %s() map[string]func() app.UI {\n", componentName))

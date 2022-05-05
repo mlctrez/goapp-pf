@@ -98,7 +98,7 @@ func (b *Body) Render() app.UI {
 	}
 
 	switch b.currentComponent().Name {
-	case "Backdrop", "BackgroundImage", "LoginPage", "Masthead", "Page":
+	case "AlertGroup", "Backdrop", "BackgroundImage", "LoginPage", "Masthead", "Page":
 		return app.Div().Body(
 			b.navigation(),
 			b.currentComponent().Component(),
