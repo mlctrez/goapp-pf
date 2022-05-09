@@ -60,6 +60,10 @@ github.com/mattn/go-isatty v0.0.12 h1:wuysRhFDzyxgEmMf5xjvJ2M9dZoWAXNNr5LSBS7uHX
 github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Kysco4FUpU=
 github.com/maxence-charriere/go-app/v9 v9.4.1 h1:uDrMIvjzkXwBjw5594i7ZqD5LY5iN7j1KeMImjWAYiw=
 github.com/maxence-charriere/go-app/v9 v9.4.1/go.mod h1:zo0n1kh4OMKn7P+MrTUUi7QwUMU2HOfHsZ293TITtxI=
+github.com/metatexx/go-app-pkgs v0.1.2 h1:kP0uiOC9onI+Tx963ga7cXc81yWIoVwMk4pjLN+9rHI=
+github.com/metatexx/go-app-pkgs v0.1.2/go.mod h1:bWOeaBykMQhYkNc0evFcaNFjMc0UeHm8N1BkMNc4pWg=
+github.com/metatexx/go-app-pkgs/mountpoint v1.0.1 h1:0dx4iIhx6ggoVTjxO/aps9vi0JzbZw3fvHPQQOKTOW8=
+github.com/metatexx/go-app-pkgs/mountpoint v1.0.1/go.mod h1:YvAetNc8lyGYmiXb/3gQzAhPCLeZsB+V89bKE6qwCZ0=
 github.com/mlctrez/bolt v0.0.3 h1:ylwzMH0zYTmP20hmTtXdFTo4ntdCCokgqxYgqDVrlAs=
 github.com/mlctrez/bolt v0.0.3/go.mod h1:pBI8ST4+nZoVc1mzDAbBrw8L4Rdod52wwRRnwPekzlE=
 github.com/mlctrez/html2goapp v1.2.2-0.20220505191013-1a337594e653 h1:IEsti5xtIhh/9V+miAaaoEmqMmDPgNx8l0HI8BjjulM=
@@ -141,6 +145,8 @@ gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127/go.mod h1:Co6ibVJAznAaIkqp8
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 h1:YR8cESwS4TdDjEe65xsg0ogRM/Nc3DYOhEAlW+xobZo=
 gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/errgo.v2 v2.1.0/go.mod h1:hNsd1EY+bozCKY1Ytp96fpM3vjJbqLJn88ws8XvfDNI=
+gopkg.in/loremipsum.v1 v1.1.0 h1:j6TAjs6Db5AMfLwTzs51Kq4Qx7dCufw/IJ0hpMbjU8U=
+gopkg.in/loremipsum.v1 v1.1.0/go.mod h1:bgP3Lq/dzIvYEMrwxIwVMx/W8aQ5167rlu+UO7zGdf0=
 gopkg.in/yaml.v2 v2.2.2/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
 gopkg.in/yaml.v2 v2.2.8 h1:obN1ZagJSUGI0Ek/LBmuj4SNLPfIny3KsKFopxRdj10=
 gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=

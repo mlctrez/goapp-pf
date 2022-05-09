@@ -136,6 +136,7 @@ func BuildHandler() *app.Handler {
 		Description: "go-app starter",
 		Name:        "go-app starter",
 		Scripts:     []string{},
+		Env:         map[string]string{"DEV": os.Getenv("DEV")},
 		Icon: app.Icon{
 			AppleTouch: "/web/logo-192.png",
 			Default:    "/web/logo-192.png",

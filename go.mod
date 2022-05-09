@@ -38,6 +38,8 @@ require (
 	github.com/leodido/go-urn v1.2.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-isatty v0.0.12 // indirect
+	github.com/metatexx/go-app-pkgs v0.1.2 // indirect
+	github.com/metatexx/go-app-pkgs/mountpoint v1.0.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
@@ -49,6 +51,7 @@ require (
 	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/tools v0.0.0-20210101214203-2dba1e4ea05c // indirect
+	gopkg.in/loremipsum.v1 v1.1.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 	mvdan.cc/gofumpt v0.1.1-0.20210926212236-00a38e9e18de // indirect
 )
