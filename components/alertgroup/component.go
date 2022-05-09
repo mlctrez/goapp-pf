@@ -5,9 +5,9 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
-	"github.com/metatexx/go-app-pkgs/mountpoint"
 	"github.com/mlctrez/goapp-pf/components/alert"
 	"github.com/mlctrez/goapp-pf/internal/key"
+	"github.com/mlctrez/goapp-pf/internal/ui"
 )
 
 type AlertGroup struct {
@@ -71,11 +71,11 @@ func (a *alertGroup) Render() app.UI {
 			overflowItems++
 			continue
 		}
-		ui := mountpoint.New(child.UI())
+		alert := child.UI()
 		if doSwitch {
-			ui.Switch(child.UI())
+			alert = ui.Wrap(alert)
 		}
-		li := app.Li().Class("pf-c-alert-group__item").Body(ui.UI())
+		li := app.Li().Class("pf-c-alert-group__item").Body(alert)
 		items = append(items, li)
 	}
 	if overflowItems > 0 {

@@ -12,7 +12,6 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/kardianos/service v1.2.1
 	github.com/maxence-charriere/go-app/v9 v9.4.1
-	github.com/metatexx/go-app-pkgs/mountpoint v1.0.1
 	github.com/mlctrez/bolt v0.0.3
 	github.com/mlctrez/servicego v1.3.1
 	github.com/pojntfx/html2goapp v1.2.1

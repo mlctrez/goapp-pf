@@ -3,6 +3,7 @@ package alertgroup
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-pf/components/alert"
 	"github.com/mlctrez/goapp-pf/internal/ui"
@@ -20,9 +21,10 @@ func Demo() *AlertGroup {
 
 func DemoAddAlert() app.UI {
 	return app.Button().Text("add alert").OnClick(func(ctx app.Context, e app.Event) {
-		title := "there be dragons at " + time.Now().Format(time.RFC3339)
+		title := "dragon time " + time.Now().Format(time.RFC3339Nano)
 
 		Demo().Add(ctx, &alert.Alert{
+			ID:         uuid.NewString(),
 			Variant:    alert.Danger,
 			Title:      title,
 			Expandable: true,
