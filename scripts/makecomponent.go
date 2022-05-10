@@ -57,6 +57,8 @@ var tmpl = `
 package {{.packageName}}
 
 import (
+	"fmt"
+
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-pf/internal/key"
 )

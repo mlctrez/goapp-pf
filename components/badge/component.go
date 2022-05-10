@@ -32,12 +32,7 @@ func (b *badge) OnMount(ctx app.Context) {
 }
 
 func (b *badge) Render() app.UI {
-	b.Once.Do(func() {
-		app.Log("read once", b.ID, b.read, b.Read)
-		b.read = b.Read
-	})
-
-	app.Log("read     ", b.ID, b.read, b.Read)
+	b.Once.Do(func() { b.read = b.Read })
 
 	span := app.Span().Class("pf-c-badge")
 	if b.read {
