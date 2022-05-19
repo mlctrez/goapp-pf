@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/mlctrez/bolt"
+	"github.com/mlctrez/goapp-pf/attic/typescript"
 	"github.com/mlctrez/goapp-pf/scripts"
-	"github.com/mlctrez/goapp-pf/typescript"
 	"go.etcd.io/bbolt"
 )
 

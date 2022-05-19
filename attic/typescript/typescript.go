@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mlctrez/goapp-pf/attic/typescript/kind"
 	"github.com/mlctrez/goapp-pf/scripts"
-	"github.com/mlctrez/goapp-pf/typescript/kind"
 )
 
 type SourceFile struct {

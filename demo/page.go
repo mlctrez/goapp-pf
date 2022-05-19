@@ -5,7 +5,7 @@ import (
 
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-pf/components/pfswitch"
-	"github.com/mlctrez/goapp-pf/reloader"
+	"github.com/mlctrez/goapp-pf/demo/reloader"
 )
 
 type Page struct {

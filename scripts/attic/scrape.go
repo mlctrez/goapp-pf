@@ -5,7 +5,7 @@ package main
 import (
 	"log"
 
-	"github.com/mlctrez/goapp-pf/scrape"
+	"github.com/mlctrez/goapp-pf/attic/scrape"
 )
 
 func failErr(err error) {

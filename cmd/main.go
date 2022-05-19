@@ -8,8 +8,8 @@ import (
 
 	"github.com/kardianos/service"
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
+	"github.com/mlctrez/goapp-pf/demo"
 	"github.com/mlctrez/goapp-pf/server"
-	"github.com/mlctrez/goapp-pf/ui"
 	"github.com/mlctrez/servicego"
 )
 
@@ -20,7 +20,7 @@ type svc struct {
 
 func main() {
 
-	ui.AddRoutes()
+	demo.AddRoutes()
 
 	if app.IsClient {
 		app.RunWhenOnBrowser()
