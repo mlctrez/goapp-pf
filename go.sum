@@ -60,10 +60,12 @@ github.com/mattn/go-isatty v0.0.12 h1:wuysRhFDzyxgEmMf5xjvJ2M9dZoWAXNNr5LSBS7uHX
 github.com/mattn/go-isatty v0.0.12/go.mod h1:cbi8OIDigv2wuxKPP5vlRcQ1OAZbq2CE4Kysco4FUpU=
 github.com/maxence-charriere/go-app/v9 v9.4.1 h1:uDrMIvjzkXwBjw5594i7ZqD5LY5iN7j1KeMImjWAYiw=
 github.com/maxence-charriere/go-app/v9 v9.4.1/go.mod h1:zo0n1kh4OMKn7P+MrTUUi7QwUMU2HOfHsZ293TITtxI=
-github.com/mlctrez/bolt v0.0.3 h1:ylwzMH0zYTmP20hmTtXdFTo4ntdCCokgqxYgqDVrlAs=
-github.com/mlctrez/bolt v0.0.3/go.mod h1:pBI8ST4+nZoVc1mzDAbBrw8L4Rdod52wwRRnwPekzlE=
+github.com/mlctrez/bolt v0.0.7 h1:OXRsLoNrG7Tzdp/X2ur4irub/BqEJcAyCgNv8xLKHKk=
+github.com/mlctrez/bolt v0.0.7/go.mod h1:pBI8ST4+nZoVc1mzDAbBrw8L4Rdod52wwRRnwPekzlE=
 github.com/mlctrez/html2goapp v1.2.2-0.20220505191013-1a337594e653 h1:IEsti5xtIhh/9V+miAaaoEmqMmDPgNx8l0HI8BjjulM=
 github.com/mlctrez/html2goapp v1.2.2-0.20220505191013-1a337594e653/go.mod h1:LtN7+XQb27SRrAnfSCCTB8nPHrg8bQCKKUQEoU2BQGI=
+github.com/mlctrez/mystace v0.0.1 h1:uH75aB6hNgfyvQN6eQ4Qt634b5WRduIMCiYUXDlPIcA=
+github.com/mlctrez/mystace v0.0.1/go.mod h1:VlTZjreVG53isOjMd5vbaYoZ4sEB33GaYNP8g+ORot4=
 github.com/mlctrez/servicego v1.3.1 h1:U5rNaC/RS6racWuElVQbOqID+lkoCjx3bki9TZL8yGc=
 github.com/mlctrez/servicego v1.3.1/go.mod h1:h743fCA0QegJEVpSTceFvnyy9qG2j7CMCryL9iALtlo=
 github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 h1:ZqeYNhU3OHLH3mGKHDcjJRFFRrJa6eAM5H+CtDdOsPc=
@@ -77,8 +79,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/rogpeppe/go-internal v1.7.1-0.20210301144926-2630b2f15b04/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
 github.com/srwiley/oksvg v0.0.0-20220128195007-1f435e4c2b44 h1:XPYXKIuH/n5zpUoEWk2jWV/SjEMNYmqDYmTgbjmhtaI=
 github.com/srwiley/oksvg v0.0.0-20220128195007-1f435e4c2b44/go.mod h1:cNQ3dwVJtS5Hmnjxy6AgTPd0Inb3pW05ftPSX7NZO7Q=
-github.com/srwiley/rasterx v0.0.0-20210519020934-456a8d69b780 h1:oDMiXaTMyBEuZMU53atpxqYsSB3U1CHkeAu2zr6wTeY=
-github.com/srwiley/rasterx v0.0.0-20210519020934-456a8d69b780/go.mod h1:mvWM0+15UqyrFKqdRjY6LuAVJR0HOVhJlEgZ5JWtSWU=
+github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41 h1:YR16ysw3I1bqwtEcYV9dpvhHEe7j55hIClkLoAqY31I=
+github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41/go.mod h1:nXTWP6+gD5+LUJ8krVhhoeHjvHTutPxMYl5SvkcnJNE=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81PSLYec5m4=
@@ -119,8 +121,8 @@ golang.org/x/sys v0.0.0-20201015000850-e3ed0017c211/go.mod h1:h1NjWce9XRLGQEsW7w
 golang.org/x/sys v0.0.0-20201119102817-f84b799fce68/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20201207223542-d4d67f95c62d/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
 golang.org/x/sys v0.0.0-20210330210617-4fbd30eecc44/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
-golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 h1:nonptSpoQ4vQjyraW20DXPAglgQfVnM9ZC6MmNLMR60=
-golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20220517195934-5e4e11fc645e h1:w36l2Uw3dRan1K3TyXriXvY+6T56GNmlKGcqiQUJDfM=
+golang.org/x/sys v0.0.0-20220517195934-5e4e11fc645e/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/text v0.3.0/go.mod h1:NqM8EUOU14njkJ3fqMW+pc6Ldnwhi/IjpwHt7yyuwOQ=
 golang.org/x/text v0.3.2/go.mod h1:bEr9sfX3Q8Zfm5fL9x+3itogRgK3+ptLWKqgva+5dAk=

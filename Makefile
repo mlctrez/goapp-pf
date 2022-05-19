@@ -9,27 +9,30 @@ LD_FLAGS="-w -X $(MODULE)/server.Version=$(VERSION) -X $(MODULE)/server.Commit=$
 run: binary
 	@DEV=1 ./temp/$(APP_NAME)
 
-wasm: pf_archive
+wasm: pfarchive
 	@mkdir -p server/web
 	@rm -rf server/web/app.wasm
 	@GOARCH=wasm GOOS=js go build -o server/web/app.wasm -ldflags $(LD_FLAGS) cmd/main.go
 
 binary: wasm
 	@mkdir -p temp
-	@go build -o temp/$(APP_NAME)	-ldflags $(LD_FLAGS) cmd/main.go
+	@go build -o temp/$(APP_NAME) -ldflags $(LD_FLAGS) cmd/main.go
 
 deploy: binary
 	scp temp/$(APP_NAME) goservice:/tmp
 	ssh goservice sudo /tmp/$(APP_NAME) -action deploy
 
-pf_archive:
-	go run scripts/genpfarchive.go
-	cp temp/node_pf/patternfly.zip server/web
-	go run scripts/genpflogos.go
+npminstall:
+	@go run scripts/npminstall/main.go
 
-htmltogo:
-	go run scripts/htmltogo.go
+pfarchive: npminstall
+	@go run scripts/pfarchive/main.go
 
+pflogos: npminstall
+	@go run scripts/pflogos/main.go
 
+tsinspect: npminstall
+	@go run scripts/tsinspect/main.go
 
-
+tsconvert: tsinspect
+	@go run scripts/tsconvert/main.go

@@ -13,7 +13,6 @@ import (
 )
 
 // AboutModal renders an about modal dialog wrapped with backdrop and bullseye.
-// https://www.patternfly.org/v4/components/about-modal/#props
 type AboutModal struct {
 	ID                   string
 	BrandImage           *BrandImage
@@ -22,18 +21,15 @@ type AboutModal struct {
 	CloseButtonAriaLabel string
 	ProductName          string
 	Trademark            *Trademark
+	Open                 bool
 }
 
 func (a *AboutModal) UI() app.UI {
-	return &aboutModal{AboutModal: *a}
+	return &aboutModal{state: *a}
 }
 
-func (a *AboutModal) Open(ctx app.Context, _ app.Event) {
-	ctx.SetState(stateKey(a.ID, "open"), true)
-}
-
-func (a *AboutModal) Close(ctx app.Context, _ app.Event) {
-	ctx.SetState(stateKey(a.ID, "open"), false)
+func (a *AboutModal) UpdateState(ctx app.Context) {
+	ctx.SetState(stateKey(a.ID, "state"), a)
 }
 
 type BrandImage struct {
@@ -44,9 +40,7 @@ type BrandImage struct {
 func (b *BrandImage) UI() app.UI {
 	div := app.Div()
 	if b != nil {
-		img := app.Img().Class("pf-c-about-modal-box__brand-image")
-		img.Src(b.Src).Alt(b.Alt)
-
+		img := app.Img().Class("pf-c-about-modal-box__brand-image").Src(b.Src).Alt(b.Alt)
 		div.Class("pf-c-about-modal-box__brand").Body(img)
 	}
 	return div
@@ -56,12 +50,11 @@ type Trademark struct {
 	Children []app.UI
 }
 
-func (b *Trademark) UI() app.UI {
-	div := app.Div().Class("pf-c-about-modal-box__strapline")
-	if b != nil {
-		div.Body(b.Children...)
+func (t *Trademark) UI() app.UI {
+	if t != nil {
+		return app.Div().Class("pf-c-about-modal-box__strapline").Body(t.Children...)
 	}
-	return div
+	return app.Div()
 }
 
 type Hero struct {
@@ -79,44 +72,48 @@ func (h *Hero) UI() app.UI {
 
 type aboutModal struct {
 	app.Compo
-	AboutModal
-	open bool
+	state AboutModal
 }
 
 func (a *aboutModal) OnMount(ctx app.Context) {
-	ctx.ObserveState(stateKey(a.ID, "open")).Value(&a.open)
+	ctx.ObserveState(stateKey(a.state.ID, "state")).Value(&a.state)
 }
 
 func (a *aboutModal) Render() app.UI {
-	div := app.Div().ID(a.ID)
-	if a.open {
+	div := app.Div().ID(a.state.ID)
+	if a.state.Open {
 		bullsEye := &bullseye.BullsEye{Children: ui.S(a.aboutModalBox())}
 		backDrop := &backdrop.BackDrop{Children: ui.ToAppUI(bullsEye)}
-		div.Body(backDrop.UI())
+		return div.Body(backDrop.UI())
 	}
 	return div
 }
 
 func (a *aboutModal) aboutModalBox() app.UI {
 
+	closeButton := &button.Button{
+		Children:  ui.S(fa.Icon("times")),
+		AriaLabel: a.state.CloseButtonAriaLabel,
+		OnClick:   func(ctx app.Context, e app.Event) { a.state.Open = false },
+		Variant:   button.PLain,
+	}
+
 	return app.Div().Class("pf-c-about-modal-box").Aria("role", "dialog").
-		Aria("modal", true).Aria("labelledby", a.ID+"-title").Body(
+		Aria("modal", true).Aria("labelledby", a.state.ID+"-title").Body(
 
-		a.BrandImage.UI(),
+		a.state.BrandImage.UI(),
 
-		app.Div().Class("pf-c-about-modal-box__close").Body(
-			button.Plain(fa.Icon("times")).OnClick(a.Close).
-				Aria("label", a.CloseButtonAriaLabel)),
+		app.Div().Class("pf-c-about-modal-box__close").Body(closeButton.UI()),
 
 		app.Div().Class("pf-c-about-modal-box__header").Body(
 			app.H1().Class("pf-c-title pf-m-4xl").
-				ID(a.ID+"-title").Text(a.ProductName)),
+				ID(a.state.ID+"-title").Text(a.state.ProductName)),
 
-		a.Hero.UI(),
+		a.state.Hero.UI(),
 
 		app.Div().Class("pf-c-about-modal-box__content").Body(
-			app.Div().Class("pf-c-about-modal-box__body").Body(a.Children...),
-			a.Trademark.UI()),
+			app.Div().Class("pf-c-about-modal-box__body").Body(a.state.Children...),
+			a.state.Trademark.UI()),
 	)
 }
 

@@ -1,8 +1,6 @@
 package aboutmodal
 
 import (
-	"time"
-
 	"github.com/maxence-charriere/go-app/v9/pkg/app"
 	"github.com/mlctrez/goapp-pf/internal/ui"
 )
@@ -22,15 +20,11 @@ func Demo() *AboutModal {
 		Trademark:            trademark,
 	}
 
-	if time.Now().Second()%2 == 0 {
-		demoModal.Hero = &Hero{BackgroundImageUrl: "/assets/images/pf-logo-small.svg"}
-	}
+	//if time.Now().Second()%2 == 0 {
+	//	demoModal.Hero = &Hero{BackgroundImageUrl: "/assets/images/pf-logo-small.svg"}
+	//}
 
 	return demoModal
-}
-
-func DemoOpenButton() app.UI {
-	return app.Button().Text("Show about modal").OnClick(Demo().Open)
 }
 
 func DemoList() app.UI {

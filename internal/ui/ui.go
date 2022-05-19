@@ -18,3 +18,9 @@ func ToAppUI(elem ...UI) (appUI []app.UI) {
 func S(elem app.UI) []app.UI {
 	return []app.UI{elem}
 }
+
+func W(elem app.UI) UI { return &w{ui: elem} }
+
+type w struct{ ui app.UI }
+
+func (w *w) UI() app.UI { return w.ui }

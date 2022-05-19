@@ -8,3 +8,7 @@ func Alert(message string) app.EventHandler {
 		app.Window().Call("alert", message)
 	}
 }
+
+func ConsoleLog(args ...interface{}) {
+	app.Window().Get("console").Call("log", args...)
+}

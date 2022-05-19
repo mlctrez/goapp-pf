@@ -1,5 +1,3 @@
-//go:build ignore
-
 package main
 
 import (
@@ -7,20 +5,25 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"log"
 	"os"
+	"path/filepath"
 
+	"github.com/mlctrez/goapp-pf/scripts"
 	"github.com/srwiley/oksvg"
 	"github.com/srwiley/rasterx"
 )
 
 func main() {
+	defer scripts.Recover()
+	noErr := scripts.NoErr
 
-	in, err := os.Open("temp/node_pf/node_modules/@patternfly/patternfly/assets/images/pf-c-brand__logo-on-sm.svg")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer in.Close()
+	dir := scripts.NodeTempDir()
+
+	svgFile := filepath.Join(dir, "node_modules/@patternfly/patternfly/assets/images/pf-c-brand__logo-on-sm.svg")
+
+	in, err := os.Open(svgFile)
+	noErr(err)
+	defer func() { _ = in.Close() }()
 
 	icon, _ := oksvg.ReadIconStream(in)
 
@@ -41,18 +44,11 @@ func main() {
 
 		var out *os.File
 		out, err = os.Create(fmt.Sprintf("server/web/logo-%d.png", size))
-		if err != nil {
-			log.Fatal(err)
-		}
+		noErr(err)
 
-		err = png.Encode(out, rgba)
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = out.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
+		noErr(png.Encode(out, rgba))
+
+		noErr(out.Close())
 	}
 
 }

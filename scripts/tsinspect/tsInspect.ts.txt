@@ -1,0 +1,18 @@
+const ts = require('typescript');
+const fs = require("fs");
+
+const myArgs = process.argv.slice(2);
+
+const replacer = function (key, value) {
+    if (key === "jsDoc") value.forEach(doc => doc.parent = null)
+    if (key === "parseDiagnostics") return null
+    return value
+}
+
+var output = {}
+
+myArgs.forEach(path => {
+    output[path] = ts.createSourceFile(path, fs.readFileSync(path, 'utf8'), ts.ScriptTarget.Latest);
+})
+
+console.log(JSON.stringify(output, replacer))

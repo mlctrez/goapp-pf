@@ -12,11 +12,13 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/kardianos/service v1.2.1
 	github.com/maxence-charriere/go-app/v9 v9.4.1
-	github.com/mlctrez/bolt v0.0.3
+	github.com/mlctrez/bolt v0.0.7
+	github.com/mlctrez/mystace v0.0.1
 	github.com/mlctrez/servicego v1.3.1
 	github.com/pojntfx/html2goapp v1.2.1
 	github.com/srwiley/oksvg v0.0.0-20220128195007-1f435e4c2b44
-	github.com/srwiley/rasterx v0.0.0-20210519020934-456a8d69b780
+	github.com/srwiley/rasterx v0.0.0-20220128185129-2efea2b9ea41
+	go.etcd.io/bbolt v1.3.6
 	golang.org/x/net v0.0.0-20211118161319-6a13c67c3ce4
 	gopkg.in/loremipsum.v1 v1.1.0
 )
@@ -43,11 +45,10 @@ require (
 	github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4 // indirect
-	go.etcd.io/bbolt v1.3.6 // indirect
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/image v0.0.0-20211028202545-6944b10bf410 // indirect
 	golang.org/x/mod v0.4.0 // indirect
-	golang.org/x/sys v0.0.0-20220503163025-988cb79eb6c6 // indirect
+	golang.org/x/sys v0.0.0-20220517195934-5e4e11fc645e // indirect
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/tools v0.0.0-20210101214203-2dba1e4ea05c // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
