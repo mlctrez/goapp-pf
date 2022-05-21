@@ -6,6 +6,7 @@ const myArgs = process.argv.slice(2);
 const replacer = function (key, value) {
     if (key === "jsDoc") value.forEach(doc => doc.parent = null)
     if (key === "parseDiagnostics") return null
+    if (key === "parent") return null
     return value
 }
 

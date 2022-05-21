@@ -20,7 +20,7 @@ func NodeTempDir() string {
 func NoErr(err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1)
-		panic(fmt.Errorf("%s:%d : %s", file, line, err))
+		panic(fmt.Errorf("runtime error : %s:%d : %s", file, line, err))
 	}
 }
 
@@ -37,6 +37,16 @@ func Recover() {
 		fmt.Printf("error: %+v\n", e)
 		os.Exit(1)
 	}
+}
+
+func JsonIndentBytesToFile(data []byte, path string) {
+	m := make(map[string]interface{})
+	NoErr(json.Unmarshal(data, &m))
+	JsonIndentToFile(m, path)
+}
+
+func JsonIndentToFile(i interface{}, path string) {
+	NoErr(os.WriteFile(path, []byte(JsonIndent(i)), 0755))
 }
 
 func JsonIndent(i interface{}) string {

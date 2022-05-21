@@ -13,7 +13,6 @@ require (
 	github.com/kardianos/service v1.2.1
 	github.com/maxence-charriere/go-app/v9 v9.4.1
 	github.com/mlctrez/bolt v0.0.7
-	github.com/mlctrez/mystace v0.0.1
 	github.com/mlctrez/servicego v1.3.1
 	github.com/pojntfx/html2goapp v1.2.1
 	github.com/srwiley/oksvg v0.0.0-20220128195007-1f435e4c2b44
@@ -52,5 +51,6 @@ require (
 	golang.org/x/text v0.3.6 // indirect
 	golang.org/x/tools v0.0.0-20210101214203-2dba1e4ea05c // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 	mvdan.cc/gofumpt v0.1.1-0.20210926212236-00a38e9e18de // indirect
 )

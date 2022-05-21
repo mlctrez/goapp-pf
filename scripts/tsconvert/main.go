@@ -1,71 +1,110 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"go/format"
 	"os"
-	"path/filepath"
-	"strings"
 
 	"github.com/mlctrez/bolt"
-	"github.com/mlctrez/goapp-pf/attic/typescript"
 	"github.com/mlctrez/goapp-pf/scripts"
+	"github.com/mlctrez/goapp-pf/typescript/recorder"
 	"go.etcd.io/bbolt"
 )
 
 func main() {
+
 	defer scripts.Recover()
 	noErr := scripts.NoErr
 
 	db := scripts.Bolt(scripts.InspectDatabase)
 	defer func() { scripts.BoltClose(db) }()
 
-	componentsBucket := bolt.Key("components")
+	buckets := bolt.Keys{"components", "layouts", "typescript"}
+	noErr(db.CreateBuckets(buckets))
 
-	single := "node_modules/@patternfly/react-core/src/components/NumberInput/NumberInput.tsx"
-	if os.Getenv("foo") == "asd" {
-		single = ""
-	}
+	buckets = bolt.Keys{"components"}
 
-	if single != "" {
+	rootNode := &Node{Name: "sourceFile"}
 
-		v := &bolt.Value{K: bolt.Key(single)}
-		noErr(db.Get(componentsBucket, v))
-
-		m := make(map[string]interface{})
-		noErr(json.Unmarshal(v.V, &m))
-		formatted, err := json.MarshalIndent(m, "", "  ")
-		noErr(err)
-
-		jsonFile := strings.ReplaceAll(filepath.Base(single), ".tsx", ".json")
-		jsonFilePath := filepath.Join("temp", "json", jsonFile)
-		noErr(os.WriteFile(jsonFilePath, formatted, 0666))
-
-		sf := &typescript.SourceFile{}
-		noErr(json.Unmarshal(v.V, &sf))
-
-		tsxFile := filepath.Join("temp", "json", filepath.Base(single))
-		noErr(os.WriteFile(tsxFile, []byte(sf.Text), 0666))
-
-		sf.ParseStatements()
-		sf.Dump()
-		return
-	}
+	ntr := &recorder.NodeTypesRecorder{}
 
 	noErr(db.View(func(tx *bbolt.Tx) error {
-		bucket := tx.Bucket(componentsBucket.B())
-		if bucket == nil {
-			return fmt.Errorf("invalid bucket name %s", componentsBucket)
-		}
-		cursor := bucket.Cursor()
-		for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
-			m := &typescript.SourceFile{}
-			noErr(json.Unmarshal(v, &m))
-
-			m.ParseStatements()
-			m.Dump()
+		for _, bk := range buckets {
+			bucket := tx.Bucket(bk.B())
+			cursor := bucket.Cursor()
+			for k, v := cursor.First(); k != nil; k, v = cursor.Next() {
+				m := make(map[string]interface{})
+				noErr(json.Unmarshal(v, &m))
+				rootNode.Attr(m, ntr.AttrRecorder)
+			}
 		}
 		return nil
 	}))
 
+	noErr(os.MkdirAll("typescript", 0755))
+
+	ntr.PluralFix()
+
+	buf := &bytes.Buffer{}
+	buf.WriteString("package typescript\n")
+	buf.WriteString("import (\n")
+	buf.WriteString(fmt.Sprintf("\t%q", "github.com/mlctrez/goapp-pf/typescript/kind"))
+	buf.WriteString(")\n")
+
+	ntr.WriteCode(buf)
+	formatted, err := format.Source(buf.Bytes())
+	noErr(err)
+	noErr(os.WriteFile("typescript/types.go", formatted, 0755))
+
+}
+
+type Node struct {
+	Name       string
+	Attributes map[string]interface{} `json:"attributes,omitempty"`
+	Children   map[string]*Node       `json:"children,omitempty"`
+}
+
+func (n *Node) initAttributes() {
+	if n.Attributes == nil {
+		n.Attributes = make(map[string]interface{})
+	}
+}
+
+func (n *Node) initChildren() {
+	if n.Children == nil {
+		n.Children = make(map[string]*Node)
+	}
+}
+
+func (n *Node) Attr(m map[string]interface{}, r recorder.AttrRecorder) {
+
+	for k, v := range m {
+		r(n.Name, k, v)
+		switch vt := v.(type) {
+		case []interface{}:
+			for _, av := range vt {
+				key := "[]" + k
+				n.initChildren()
+				child := n.Children[key]
+				if child == nil {
+					child = &Node{Name: k}
+					n.Children[key] = child
+				}
+				child.Attr(av.(map[string]interface{}), r)
+			}
+		case map[string]interface{}:
+			n.initChildren()
+			child := n.Children[k]
+			if child == nil {
+				child = &Node{Name: k}
+				n.Children[k] = child
+			}
+			child.Attr(vt, r)
+		default:
+			n.initAttributes()
+			n.Attributes[k] = vt
+		}
+	}
 }
