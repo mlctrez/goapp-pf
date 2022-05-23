@@ -4,16 +4,34 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/mlctrez/goapp-pf/internal/line"
 	"github.com/mlctrez/goapp-pf/internal/util"
 	"github.com/mlctrez/goapp-pf/scripts"
 	"github.com/mlctrez/goapp-pf/typescript/kind"
 )
 
-func (n *Name) TextString() string {
-	if n.EscapedText != "" {
-		return n.EscapedText
+func deHyphenate(text string) string {
+	if strings.Contains(text, "-") {
+		parts := strings.Split(text, "-")
+		for i, part := range parts {
+			parts[i] = util.Title(part)
+		}
+		text = strings.Join(parts, "")
 	}
-	return n.Text
+	return text
+}
+
+func (n *Name) TextString() string {
+
+	var textString string
+	if n.EscapedText != "" {
+		textString = n.EscapedText
+	} else {
+		textString = n.Text
+	}
+	textString = deHyphenate(textString)
+
+	return textString
 }
 
 func (t *Type) GoType() string {
@@ -42,7 +60,22 @@ func (t *Type) GoType() string {
 			var memberValues []string
 			for _, member := range t.Members {
 				memType := member.Type
-				txt := member.Name.TextString()
+				txt := "<unknown>"
+				if member.Name != nil {
+					txt = member.Name.TextString()
+				} else {
+					if member.Parameters != nil {
+						var txtParts []string
+						for _, parameter := range member.Parameters {
+							txtPart := fmt.Sprintf("%s: %s",
+								parameter.Name.TextString(), parameter.Type.GoType())
+							txtParts = append(txtParts, txtPart)
+						}
+						txt = fmt.Sprintf("[%s]", strings.Join(txtParts, ", "))
+					} else {
+						scripts.NoErr(fmt.Errorf("cannot build member name"), member)
+					}
+				}
 				switch memType.Kind {
 				case kind.AnyKeyword:
 					mv := fmt.Sprintf("%q:%s", txt, "any")
@@ -51,7 +84,7 @@ func (t *Type) GoType() string {
 					mv := fmt.Sprintf("%q:%s", txt, "bool")
 					memberValues = append(memberValues, mv)
 				case kind.StringKeyword:
-					mv := fmt.Sprintf("%q:%s", txt, "string")
+					mv := fmt.Sprintf("%s:%s", txt, "string")
 					memberValues = append(memberValues, mv)
 				case kind.FunctionType:
 					mv := fmt.Sprintf("%q:%s", txt, functionSignature(memType.Type, memType.Parameters))
@@ -67,23 +100,28 @@ func (t *Type) GoType() string {
 						case kind.StringKeyword:
 							unionParts = append(unionParts, "string")
 						default:
-							fmt.Println(scripts.JsonIndent(member))
-							scripts.NoErr(fmt.Errorf("memType.Types.Kind %v", m.Kind.StringValue()))
+							scripts.NoErr(fmt.Errorf("memType.Types.Kind %v", m.Kind.StringValue()), member)
 						}
 					}
 					memberValues = append(memberValues, fmt.Sprintf("%s:{ %s }", txt, strings.Join(unionParts, ", ")))
 				case kind.TypeReference:
 					mv := fmt.Sprintf("%q:%s", txt, member.Type.TypeName.TextString())
 					memberValues = append(memberValues, mv)
+				case kind.LiteralType:
+					switch memType.Literal.Kind {
+					case kind.StringLiteral:
+						memberValues = append(memberValues, fmt.Sprintf("'%s'", memType.Literal.Text))
+					default:
+						scripts.NoErr(fmt.Errorf("memType.Literal.Kind %v",
+							memType.Literal.Kind.StringValue()), member)
+					}
 				default:
-					fmt.Println(scripts.JsonIndent(member))
-					scripts.NoErr(fmt.Errorf("member.Type.Kind %v", memType.Kind.StringValue()))
+					scripts.NoErr(fmt.Errorf("member.Type.Kind %v", memType.Kind.StringValue()), member)
 				}
 			}
-			return fmt.Sprintf("map[string]string // { %s }", strings.Join(memberValues, ", "))
+			return fmt.Sprintf("map[string]string /* { %s } */", strings.Join(memberValues, ", "))
 		}
-		fmt.Println(scripts.JsonIndent(t))
-		scripts.NoErr(fmt.Errorf("syntax.TypeLiteral unhandled"))
+		scripts.NoErr(fmt.Errorf("syntax.TypeLiteral unhandled"), t)
 		return ""
 	case kind.ArrayType:
 		if t.ElementType != nil {
@@ -96,19 +134,22 @@ func (t *Type) GoType() string {
 				return "[]int"
 			case kind.AnyKeyword:
 				return "[]any"
-			case kind.FunctionType, kind.ParenthesizedType:
+			case kind.ParenthesizedType:
+				return fmt.Sprintf("[]( %s )", t.ElementType.Type.GoType())
+			case kind.FunctionType:
 				elType := t.ElementType.Type
 				return "[]" + functionSignature(elType.Type, elType.Parameters)
 			default:
-				fmt.Println(scripts.JsonIndent(t))
-				scripts.NoErr(fmt.Errorf("t.ElementType.Kind %d", t.ElementType.Kind))
+				scripts.NoErr(fmt.Errorf("t.ElementType.Kind %s",
+					t.ElementType.Kind.StringValue()), t)
 				return ""
 			}
 		}
-		fmt.Println(scripts.JsonIndent(t))
-		scripts.NoErr(fmt.Errorf("t.ElementType ==nil"))
+		scripts.NoErr(fmt.Errorf("t.ElementType ==nil"), t)
 		return ""
 
+	case kind.ObjectKeyword:
+		return "any /* TODO: how to pass additional properties */"
 	case kind.ParenthesizedType:
 		return fmt.Sprintf("(%s)", t.Type.GoType())
 	case kind.FunctionType:
@@ -132,8 +173,7 @@ func (t *Type) GoType() string {
 				unionParts = append(unionParts, typeOf)
 			case kind.ArrayType:
 				if p.ElementType == nil {
-					fmt.Println(scripts.JsonIndent(p))
-					scripts.NoErr(fmt.Errorf("syntax.ArrayType - nill p.ElementType"))
+					scripts.NoErr(fmt.Errorf("syntax.ArrayType - nill p.ElementType"), p)
 				}
 				switch p.ElementType.Kind {
 				case kind.TypeReference:
@@ -145,9 +185,12 @@ func (t *Type) GoType() string {
 					unionParts = append(unionParts, "[]int")
 				case kind.AnyKeyword:
 					unionParts = append(unionParts, "[]any")
+				case kind.ParenthesizedType:
+
+					up := fmt.Sprintf("[]( %s )", p.ElementType.Type.GoType())
+					unionParts = append(unionParts, up)
 				default:
-					fmt.Println(scripts.JsonIndent(t))
-					scripts.NoErr(fmt.Errorf("unhandled union array type %v", p.ElementType.Kind.StringValue()))
+					scripts.NoErr(fmt.Errorf("unhandled union array type %v", p.ElementType.Kind.StringValue()), t)
 				}
 			case kind.TypeReference:
 				unionParts = append(unionParts, p.TypeName.TextString())
@@ -157,15 +200,13 @@ func (t *Type) GoType() string {
 				unionParts = append(unionParts, "any")
 
 			default:
-				fmt.Println(scripts.JsonIndent(t))
-				scripts.NoErr(fmt.Errorf("unhandled union Types kind %s", p.Kind.StringValue()))
+				scripts.NoErr(fmt.Errorf("unhandled union Types kind %s", p.Kind.StringValue()), t)
 			}
 		}
 		// TODO: peel of each of these types and write out a separate constant declaration?
 		return "any /* " + strings.Join(unionParts, " | ") + " */"
 	default:
-		fmt.Printf(scripts.JsonIndent(t))
-		scripts.NoErr(fmt.Errorf(fmt.Sprintf("Kind:%s", t.Kind.StringValue())))
+		scripts.NoErr(fmt.Errorf("%s", t.Kind.StringValue()), t)
 		return ""
 	}
 }
@@ -184,17 +225,21 @@ func functionSignature(typ *Type, parameters []*Parameter) string {
 
 func (t *TypeName) TextString() string {
 	// TODO: more valid checking here on types
-
 	if t == nil {
 		panic("TypeName nil")
 	}
+	var textString string
+
 	if t.EscapedText != "" {
-		return t.EscapedText
+		textString = t.EscapedText
+	} else if t.Left != nil && t.Right != nil {
+		textString = fmt.Sprintf("%s.%s", t.Left.EscapedText, t.Right.EscapedText)
+	} else {
+		scripts.NoErr(fmt.Errorf("textstring from TypeName failed"), t)
 	}
-	if t.Left != nil && t.Right != nil {
-		return fmt.Sprintf("%s.%s", t.Left.EscapedText, t.Right.EscapedText)
-	}
-	return "TypeName:TextString fixme"
+
+	return fmt.Sprintf("any // %s ", textString)
+
 }
 
 func (m *Member) Docstring() string {
@@ -214,21 +259,13 @@ func (m *Member) Docstring() string {
 		lines = append(lines, "Optional.")
 	}
 
-	cs := fmt.Sprintf("\t// %s - ", util.Title(m.Name.TextString()))
+	declaration := util.Title(m.Name.TextString())
+	comment := fmt.Sprintf("%s - %s", declaration, strings.Join(lines, " "))
 
-	allLines := strings.Join(lines, " ")
-	if len(allLines+cs) > 120 {
-		parts := strings.Split(allLines, ". ")
-		for i, part := range parts {
-			if !strings.HasSuffix(part, ".") {
-				parts[i] = part + "."
-			}
-		}
-		sep := "\n\t// "
-		return cs + parts[0:1][0] + sep + strings.Join(parts[1:], sep)
-	}
+	parts := line.Parts(100, comment)
 
-	return cs + allLines
+	return "\t// " + strings.Join(parts, "\n\t// ")
+
 }
 
 type JsDocs []*JsDoc

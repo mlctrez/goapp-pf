@@ -17,10 +17,14 @@ func NodeTempDir() string {
 	return dir
 }
 
-func NoErr(err error) {
+func NoErr(err error, extra ...interface{}) {
 	if err != nil {
+		for _, i := range extra {
+			fmt.Println(JsonIndent(i))
+			fmt.Println()
+		}
 		_, file, line, _ := runtime.Caller(1)
-		panic(fmt.Errorf("runtime error : %s:%d : %s", file, line, err))
+		panic(fmt.Errorf("runtime error %s:%d : %s", file, line, err))
 	}
 }
 
