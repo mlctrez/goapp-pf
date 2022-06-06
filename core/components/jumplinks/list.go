@@ -1,10 +1,31 @@
 package jumplinks
 
-// from file "react-core/src/components/JumpLinks/JumpLinksList.tsx"
-
 type ListProps struct {
 	// Children - Text to be rendered inside span. Optional.
-	Children any // React.ReactNode 
+	Children any //  // React.ReactNode 
 	// ClassName - Classname to add to ul. Optional.
 	ClassName string
 }
+
+// contents of react-core/src/components/JumpLinks/JumpLinksList.tsx
+// import * as React from 'react';
+// import { css } from '@patternfly/react-styles';
+// import styles from '@patternfly/react-styles/css/components/JumpLinks/jump-links';
+// 
+// export interface JumpLinksListProps extends React.HTMLProps<HTMLUListElement> {
+//   /** Text to be rendered inside span */
+//   children?: React.ReactNode;
+//   /** Classname to add to ul. */
+//   className?: string;
+// }
+// 
+// export const JumpLinksList: React.FunctionComponent<JumpLinksListProps> = ({
+//   children,
+//   className,
+//   ...props
+// }: JumpLinksListProps) => (
+//   <ul className={css(styles.jumpLinksList, className)} {...props}>
+//     {children}
+//   </ul>
+// );
+// JumpLinksList.displayName = 'JumpLinksList';

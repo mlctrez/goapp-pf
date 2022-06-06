@@ -1,12 +1,42 @@
 package modal
 
-// from file "react-core/src/components/Modal/ModalBoxHeader.tsx"
-
 type BoxHeaderProps struct {
 	// Children - Content rendered inside the Header. Optional.
-	Children any // React.ReactNode 
+	Children any //  // React.ReactNode 
 	// ClassName - Additional classes added to the button. Optional.
 	ClassName string
 	// Help - Optional help section for the Modal Header. Optional.
-	Help any // React.ReactNode 
+	Help any //  // React.ReactNode 
 }
+
+// contents of react-core/src/components/Modal/ModalBoxHeader.tsx
+// import * as React from 'react';
+// import { css } from '@patternfly/react-styles';
+// import styles from '@patternfly/react-styles/css/components/ModalBox/modal-box';
+// 
+// export interface ModalBoxHeaderProps {
+//   /** Content rendered inside the Header */
+//   children?: React.ReactNode;
+//   /** Additional classes added to the button */
+//   className?: string;
+//   /** Optional help section for the Modal Header */
+//   help?: React.ReactNode;
+// }
+// 
+// export const ModalBoxHeader: React.FunctionComponent<ModalBoxHeaderProps> = ({
+//   children = null,
+//   className = '',
+//   help = null,
+//   ...props
+// }: ModalBoxHeaderProps) => (
+//   <header className={css(styles.modalBoxHeader, help && styles.modifiers.help, className)} {...props}>
+//     {help && (
+//       <React.Fragment>
+//         <div className={css(styles.modalBoxHeaderMain)}>{children}</div>
+//         <div className="pf-c-modal-box__header-help">{help}</div>
+//       </React.Fragment>
+//     )}
+//     {!help && children}
+//   </header>
+// );
+// ModalBoxHeader.displayName = 'ModalBoxHeader';

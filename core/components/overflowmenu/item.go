@@ -1,12 +1,40 @@
 package overflowmenu
 
-// from file "react-core/src/components/OverflowMenu/OverflowMenuItem.tsx"
-
 type ItemProps struct {
 	// Children - Any elements that can be rendered in the menu. Optional.
-	Children any
+	Children any // 
 	// ClassName - Additional classes added to the OverflowMenuItem. Optional.
 	ClassName string
 	// IsPersistent - Modifies the overflow menu item visibility. Optional.
 	IsPersistent bool
 }
+
+// contents of react-core/src/components/OverflowMenu/OverflowMenuItem.tsx
+// import * as React from 'react';
+// import { css } from '@patternfly/react-styles';
+// import styles from '@patternfly/react-styles/css/components/OverflowMenu/overflow-menu';
+// import { OverflowMenuContext } from './OverflowMenuContext';
+// 
+// export interface OverflowMenuItemProps extends React.HTMLProps<HTMLDivElement> {
+//   /** Any elements that can be rendered in the menu */
+//   children?: any;
+//   /** Additional classes added to the OverflowMenuItem */
+//   className?: string;
+//   /** Modifies the overflow menu item visibility */
+//   isPersistent?: boolean;
+// }
+// 
+// export const OverflowMenuItem: React.FunctionComponent<OverflowMenuItemProps> = ({
+//   className,
+//   children,
+//   isPersistent = false
+// }: OverflowMenuItemProps) => (
+//   <OverflowMenuContext.Consumer>
+//     {value =>
+//       (isPersistent || !value.isBelowBreakpoint) && (
+//         <div className={css(styles.overflowMenuItem, className)}> {children} </div>
+//       )
+//     }
+//   </OverflowMenuContext.Consumer>
+// );
+// OverflowMenuItem.displayName = 'OverflowMenuItem';

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -119,6 +120,8 @@ var currentSourceStream *bytes.Buffer
 
 func maybeWriteOutput(file *typescript.SourceFile) {
 
+	fmt.Println(file.FileName)
+
 	var match *DirectoryMatch
 	for _, matcher := range matchers {
 		if matcher.Matches(file.FileName) {
@@ -138,11 +141,20 @@ func maybeWriteOutput(file *typescript.SourceFile) {
 	}
 
 	pl("package %s", pkg)
-	pl("\n// from file %q", strings.TrimPrefix(file.FileName, "node_modules/@patternfly/"))
+
+	var importStatements []*typescript.Statement
 
 	for _, statement := range file.Statements {
 		switch statement.Kind {
 		case kind.ImportDeclaration:
+
+			if statement.ImportClause != nil && statement.ImportClause.Name != nil {
+				if statement.ImportClause.Name.TextString() == "styles" {
+					fmt.Println(statement.ModuleSpecifier.Text)
+				}
+			}
+
+			importStatements = append(importStatements, statement)
 		case kind.InterfaceDeclaration:
 
 			typeName := statement.Name.TextString()
@@ -160,23 +172,38 @@ func maybeWriteOutput(file *typescript.SourceFile) {
 			pl("\ntype %s struct {", typeName)
 			for _, member := range statement.Members {
 				pl(member.Docstring())
-				pl("\t%s %s", util.Title(member.Name.TextString()), member.Type.GoType())
+				goType := member.Type.GoType()
+				if strings.HasPrefix(goType, "any") {
+					goType = "any // " + strings.TrimPrefix(goType, "any")
+				}
+
+				pl("\t%s %s", util.Title(member.Name.TextString()), goType)
 			}
 
 			pl("}")
 		case kind.ClassDeclaration:
 
 		}
+
 	}
+	scripts.JsonIndentToFile(importStatements, "convert/imports.json")
+
+	scripts.NoErr(fmt.Errorf("halt"))
+
+	pl("")
+	pl("// contents of %s", strings.TrimPrefix(file.FileName, "node_modules/@patternfly/"))
+	scanner := bufio.NewScanner(bytes.NewBufferString(file.Text))
+	for scanner.Scan() {
+		pl(fmt.Sprintf("// %s", scanner.Text()))
+	}
+	scripts.NoErr(scanner.Err())
+
 	if writeOutputFile {
-
-		pkg, finalPath = match.GoPackageAndPath(file.FileName)
-
-		fmt.Println(finalPath)
 		scripts.NoErr(os.MkdirAll(filepath.Dir(finalPath), 0755))
-
 		scripts.NoErr(os.WriteFile(finalPath, buf.Bytes(), 0644))
-
+		//jsonFile := strings.TrimSuffix(finalPath, ".go") + ".json"
+		//file.Text = "omitted for space"
+		//scripts.JsonIndentToFile(file, jsonFile)
 	}
 }
 

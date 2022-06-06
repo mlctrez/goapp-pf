@@ -1,12 +1,10 @@
 package drawer
 
-// from file "react-core/src/components/Drawer/Drawer.tsx"
-
 type Props struct {
 	// ClassName - Additional classes added to the Drawer. Optional.
 	ClassName string
 	// Children - Content rendered in the left hand panel. Optional.
-	Children any // React.ReactNode 
+	Children any //  // React.ReactNode 
 	// IsExpanded - Indicates if the drawer is expanded. Optional.
 	IsExpanded bool
 	// IsInline - Indicates if the content element and panel element are displayed side by side. Optional.
@@ -14,7 +12,7 @@ type Props struct {
 	// IsStatic - Indicates if the drawer will always show both content and panel. Optional.
 	IsStatic bool
 	// Position - Position of the drawer panel. Optional.
-	Position any /* "left" | "right" | "bottom" */
+	Position any //  /* "left" | "right" | "bottom" */
 	// OnExpand - Callback when drawer panel is expanded after waiting 250ms for animation to complete. Optional.
 	OnExpand func()
 }
@@ -29,7 +27,85 @@ type ContextProps struct {
 	// Position - Optional.
 	Position string
 	// DrawerRef - Optional.
-	DrawerRef any // React.RefObject 
+	DrawerRef any //  // React.RefObject 
 	// IsInline - 
 	IsInline bool
 }
+
+// contents of react-core/src/components/Drawer/Drawer.tsx
+// import * as React from 'react';
+// import styles from '@patternfly/react-styles/css/components/Drawer/drawer';
+// import { css } from '@patternfly/react-styles';
+// 
+// export enum DrawerColorVariant {
+//   default = 'default',
+//   light200 = 'light-200'
+// }
+// 
+// export interface DrawerProps extends React.HTMLProps<HTMLDivElement> {
+//   /** Additional classes added to the Drawer. */
+//   className?: string;
+//   /** Content rendered in the left hand panel */
+//   children?: React.ReactNode;
+//   /** Indicates if the drawer is expanded */
+//   isExpanded?: boolean;
+//   /** Indicates if the content element and panel element are displayed side by side. */
+//   isInline?: boolean;
+//   /** Indicates if the drawer will always show both content and panel. */
+//   isStatic?: boolean;
+//   /** Position of the drawer panel */
+//   position?: 'left' | 'right' | 'bottom';
+//   /** Callback when drawer panel is expanded after waiting 250ms for animation to complete. */
+//   onExpand?: () => void;
+// }
+// 
+// export interface DrawerContextProps {
+//   isExpanded: boolean;
+//   isStatic: boolean;
+//   onExpand?: () => void;
+//   position?: string;
+//   drawerRef?: React.RefObject<HTMLDivElement>;
+//   isInline: boolean;
+// }
+// 
+// export const DrawerContext = React.createContext<Partial<DrawerContextProps>>({
+//   isExpanded: false,
+//   isStatic: false,
+//   onExpand: () => {},
+//   position: 'right',
+//   drawerRef: null,
+//   isInline: false
+// });
+// 
+// export const Drawer: React.FunctionComponent<DrawerProps> = ({
+//   className = '',
+//   children,
+//   isExpanded = false,
+//   isInline = false,
+//   isStatic = false,
+//   position = 'right',
+//   onExpand = () => {},
+//   ...props
+// }: DrawerProps) => {
+//   const drawerRef = React.useRef<HTMLDivElement>();
+//   return (
+//     <DrawerContext.Provider value={{ isExpanded, isStatic, onExpand, position, drawerRef, isInline }}>
+//       <div
+//         className={css(
+//           styles.drawer,
+//           isExpanded && styles.modifiers.expanded,
+//           isInline && styles.modifiers.inline,
+//           isStatic && styles.modifiers.static,
+//           position === 'left' && styles.modifiers.panelLeft,
+//           position === 'bottom' && styles.modifiers.panelBottom,
+//           className
+//         )}
+//         ref={drawerRef}
+//         {...props}
+//       >
+//         {children}
+//       </div>
+//     </DrawerContext.Provider>
+//   );
+// };
+// Drawer.displayName = 'Drawer';
